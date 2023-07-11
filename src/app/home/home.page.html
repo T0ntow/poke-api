@@ -1,20 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Lakki+Reddy&display=swap');
+</style>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <img id="back" src="assets/back.png" alt="">
+
+  <div id="content">
+
+    <ion-input id="search" type="text" placeholder="Pesquise por um número ou nome" [(ngModel)]="searchName"
+      (ionChange)="onSearchChange()">
+    </ion-input>
+
+    <div id="box">
+
+      <img id="pocke-img" [src]="pokemonImage" alt="">
+
+      <div id="box-details">
+        <span id="number"> {{ pokemonId }} </span>
+        <span id="name"> {{ pokemonName }} </span>
+      </div>
+
+      <div id="box-buttons">
+        <button (click)="prevPokemon(pokemonId)">
+          Anterior
+        </button>
+
+        <button (click)="nextPokemon(pokemonId)">
+          Próximo
+        </button>
+      </div>
+
+    </div>
   </div>
+
+
+
+
 </ion-content>
