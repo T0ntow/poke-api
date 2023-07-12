@@ -27,12 +27,9 @@ export class HomePage {
 
     if (APIResponse.status === 200) {
       const data = await APIResponse.json();
-      console.log(data);
-
-
       return data;
+
     } else {
-      console.log("Nada encontrado");
       this.pokemonId = 0;
       this.pokemonName = "Nada encontrado :(";
       this.pokemonImage = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/shiny/female/25.png';
@@ -45,10 +42,8 @@ export class HomePage {
 
     if (APIResponse.status === 200) {
       const data = await APIResponse.json();
-      console.log(data);
       return data;
     } else {
-      console.log("Nada encontrado");
       this.pokemonDesc = "Nada encontrado :(";
     }
   }
