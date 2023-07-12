@@ -7,41 +7,77 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
   searchName: string = 'pikachu';
-  
+
   pokemonName: string = 'pikachu';
   pokemonId: number = 25;
   pokemonImage: string = '';
+  pokemonDesc: string = '';
+  pokemonHabitat: string = '';
+  pokemonTypes: any[] = [];
+
 
   constructor() {
     // this.fetchPokemon('25');
     this.renderPokemon('25');
+    this.getDesc('25');
   }
 
   async fetchPokemon(pokemon: string) {
     const APIResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
 
-    if(APIResponse.status === 200) {
+    if (APIResponse.status === 200) {
       const data = await APIResponse.json();
-
       console.log(data);
+
+
       return data;
     } else {
       console.log("Nada encontrado");
       this.pokemonId = 0;
       this.pokemonName = "Nada encontrado :(";
-      this.pokemonImage = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/shiny/female/25.png' ;
+      this.pokemonImage = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/shiny/female/25.png';
     }
-  
+
+  }
+
+  async getDesc(pokemon: string) {
+    const APIResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemon}/`);
+
+    if (APIResponse.status === 200) {
+      const data = await APIResponse.json();
+      console.log(data);
+      return data;
+    } else {
+      console.log("Nada encontrado");
+      this.pokemonDesc = "Nada encontrado :(";
+    }
   }
 
   async renderPokemon(pokemon: string) {
     const data = await this.fetchPokemon(pokemon);
+    const dataDesc = await this.getDesc(pokemon);
+    this.pokemonTypes = [];
 
-    if(data) {
+    if (data) {
+      //dados principais
       this.pokemonName = data.name;
       this.pokemonId = data.id
+
       this.pokemonImage = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default']
       this.searchName = '';
+
+      //dados descrição
+      this.pokemonDesc = dataDesc['flavor_text_entries'][9]['flavor_text'];
+      this.pokemonHabitat = dataDesc['habitat']['name']
+
+      //pegar todos os tipos
+      let types = data.types;
+
+      for (let i = 0; i < types.length; i++) {
+        let type = types[i]['type']['name'];
+        this.pokemonTypes.push(type);
+      }
+
     }
   }
 
@@ -49,16 +85,16 @@ export class HomePage {
     this.renderPokemon(this.searchName);
   }
 
-  nextPokemon (pokemonId: number) {
+  nextPokemon(pokemonId: number) {
     const nextId = pokemonId + 1;
 
     this.renderPokemon(nextId.toString());
   }
 
-  prevPokemon (pokemonId: number) {
+  prevPokemon(pokemonId: number) {
     const nextId = pokemonId - 1;
 
-    if(nextId != 0) {
+    if (nextId != 0) {
       this.renderPokemon(nextId.toString());
     }
 
